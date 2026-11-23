@@ -10,11 +10,16 @@
 - Involve the engineer in significant architectural, product, and scope decisions.
 - Prioritize correctness, maintainability, testability, and sound engineering judgment.
 
+## Architecture Standards
+
+- Read the [backend standards](docs/standards/backend.md) before changing the API and the [frontend standards](docs/standards/frontend.md) before changing the UI. Read both for a slice that crosses the HTTP boundary.
+- Use the current slice spec for behaviour and acceptance checks. Use the [decision record](decisions.md) for the rationale behind these standards and links to the specs.
+
 ## Planning
 
 - Inspect requirements and the existing codebase before implementation.
 - Use `grill-with-docs` to challenge assumptions and clarify important decisions.
-- Record significant decisions and trade-offs in `DECISIONS.md` when appropriate.
+- Record significant decisions and trade-offs in `decisions.md` when appropriate.
 - Use Plan Mode to define complete, independently verifiable vertical slices.
 - Obtain engineer approval before implementation.
 
