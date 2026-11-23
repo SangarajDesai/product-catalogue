@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
 import { afterEach, expect, it, vi } from "vitest";
 import { FeaturedHome } from "../featured-home";
 
@@ -13,7 +14,7 @@ const products = [15, 9, 1, 5, 2].map((id) => ({
 
 function renderHome() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  render(<QueryClientProvider client={client}><FeaturedHome /></QueryClientProvider>);
+  render(<QueryClientProvider client={client}><MemoryRouter><FeaturedHome /></MemoryRouter></QueryClientProvider>);
   return client;
 }
 
@@ -32,6 +33,8 @@ it("shows a loading state then renders the five products in the order received",
   expect(within(list).getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent))
     .toEqual(products.map((product) => product.title));
   expect(within(list).getAllByText("₹109.95")).toHaveLength(5);
+  expect(within(list).getAllByRole("link").map((link) => link.getAttribute("href")))
+    .toEqual(products.map(({ id }) => `/products/${id}`));
   expect(fetch).toHaveBeenCalledWith("/api/products/featured", expect.anything());
 });
 

@@ -1,6 +1,6 @@
 # Product catalogue
 
-The home page displays five featured products. A React app and an Express API run behind one browser origin.
+The catalogue shows five featured products, lets shoppers browse by category or search by title and description, and opens a details page from any product tile. A React app and an Express API run behind one browser origin.
 
 ## Run with Docker
 

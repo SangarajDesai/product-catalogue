@@ -29,7 +29,7 @@ async function initializeCatalogue() {
     snapshot: createSnapshotRepository(),
   });
   const imageProvider = await createProductImageProvider();
-  const catalogue = createCatalogue({ list: async () => result.products }, imageProvider, config.featured.home);
+  const catalogue = createCatalogue({ list: async () => result.products }, imageProvider, config.featured);
 
   if (result.fallbackReason) {
     logger.warn({ source: result.source, reason: result.fallbackReason }, "Using bundled catalogue after live load failed");

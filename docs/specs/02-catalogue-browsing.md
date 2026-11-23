@@ -14,6 +14,7 @@ Let shoppers navigate categories, submit a search, and open a product details pa
 | `GET /api/products/:id` | Returns a product summary with its full `description`. An unknown product returns `404`. |
 
 - A category link opens `/categories/:slug`. Render one featured product first, then the remaining category products. Render each product once.
+- Keep additional category products and search results in the selected catalogue's order.
 - The search form accepts clicks or Enter on a nonblank term. On submit, navigate to `/search?q=…` with the trimmed term. Use that term to drive the TanStack Query request. Show a clear no-results message and distinguish it from a request failure.
 - A tile from home, a category, or search opens `/products/:id`. Show the title, image, category, full description, and an INR price. Use the amount as supplied by Fake Store and use the currency from the API for formatting.
 - Keep product components and response schemas inside Catalogue. Parse responses with Zod before caching them. Handle loading, HTTP errors, and malformed responses within the feature. Show the request ID on failures when available. Use its error boundary for unexpected render failures and offer recovery from the fallback.
@@ -35,3 +36,11 @@ npm run test:e2e
 - **Browser:** From `http://localhost:8080`, open a category and verify the featured product appears once. Submit a known snapshot search term, open a matching product, and verify the details and INR price. Open a product URL directly to confirm the web container serves deep links. Extend the existing Playwright journey through these screens.
 
 Record the actual results and stop for engineer review before [product enquiry](03-product-enquiry.md).
+
+## Verification record
+
+Verified on 23 November 2026.
+
+- All 47 API and UI tests passed. They covered category grouping, title and description matching, blank and missing input, zero matches, request-linked `404` responses, INR formatting, and recovery from a malformed response or a render failure.
+- TypeScript checks, import-boundary checks, and production builds passed for both workspaces. The web build retained the two non-blocking Zod annotation warnings recorded in project setup.
+- The snapshot-backed Compose Playwright test passed through home, category, keyboard search, and product details. It also loaded the product URL directly through Nginx. A manual Chrome walkthrough confirmed the category grouping and the product image, category, description, and INR price.
