@@ -1,0 +1,30 @@
+:root {
+  color: #1b241e;
+  background: #f7f8f5;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+}
+
+.shell {
+  box-sizing: border-box;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding: clamp(2rem, 7vw, 5rem) 1.25rem;
+}
+
+h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+button {
+  font: inherit;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}

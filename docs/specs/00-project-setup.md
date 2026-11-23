@@ -15,13 +15,13 @@ Establish a runnable React and Express baseline. A browser should load the app s
 
 - Separate the Express app factory from the process entry point. Tests build an app with injected dependencies. The process entry point selects providers, initializes the app, and starts listening.
 - Put Catalogue and Enquiry under `apps/api/src/modules/` as they land. Each owns its HTTP routes, application use cases and provider interfaces, domain types, and infrastructure adapters. HTTP and infrastructure depend on application contracts. Domain and application code stay independent of Express, SMTP, and Fake Store. The entry point wires cross-module calls through public interfaces. Automatically check these import rules.
-- Put web capability code under `apps/web/src/features/`. Share reusable UI primitives and the error boundary component through `src/shared/components/`. Share HTTP transport and error parsing through `src/shared/http/`. Map malformed JSON, invalid response shapes, and unexpected content types to recoverable API errors. Feature components and Zod response schemas belong in their respective features. Mount the boundary separately for each feature as it lands.
+- Put web capability code under `apps/web/src/features/`, with a `tests/` directory inside each feature. Keep app shell and shared component tests with the code they exercise. Share reusable UI primitives and the error boundary component through `src/shared/components/`. Share HTTP transport and error parsing through `src/shared/http/`. Map malformed JSON, invalid response shapes, and unexpected content types to recoverable API errors. Feature components and Zod response schemas belong in their respective features. Mount the boundary separately for each feature as it lands.
 
 ## Readiness, errors, and logs
 
 - The app shell renders at `/`. `GET /api/health` returns `200` with `{ "status": "ok" }` when the API is ready. Give the API and web containers health checks so `docker compose up --wait` waits for readiness, including the web proxy. Starting with the featured home slice, initialize the selected catalogue before accepting requests.
 - Register promise-returning async handlers and middleware directly with Express 5. Route rejections to one final error middleware. Use local catches for recovery or provider-specific failure translation.
-- Use `ApplicationError` for application failures and `HttpError` for errors at the HTTP boundary. The final middleware returns `{ "error": { "code": "…", "message": "…", "requestId": "…" } }`. Return `400` for invalid input, `404` for missing resources or API routes, `503` for unavailable mail delivery, and a generic `500` for unexpected errors.
+- Keep `ApplicationError`, `HttpError`, and HTTP error mapping in separate files. A module defines its business errors in its own `application/errors/` directory and supplies their public HTTP status and message at startup. The middleware returns `{ "error": { "code": "…", "message": "…", "requestId": "…" } }`. Return `400` for invalid input, `404` for missing resources or API routes, `503` when Enquiry registers mail unavailability, and a generic `500` for unexpected or unmapped errors.
 - Generate a request ID before parsing the body and return it as `X-Request-Id`. Use Pino with configurable log level. Record method, route template, status, duration, request ID, and error code when present. Keep contact details, bodies, credentials, and raw provider payloads out of logs and public errors.
 
 ## Run and verify
@@ -44,3 +44,13 @@ npm run test:e2e
 - Run `docker compose down` after the Compose check. In two terminals, run `./scripts/dev.sh api` and `./scripts/dev.sh web`. Confirm the app shell and `GET /api/health` through `http://localhost:5173`.
 
 Record the actual build, test, and browser results. Stop for engineer review before [featured home](01-featured-home.md).
+
+## Verification record
+
+Verified on 23 November 2026 with Node.js 22.22.0, npm 10.9.4, and Docker Compose 2.38.2.
+
+- A clean `npm ci` completed and reported zero vulnerabilities. Both production builds, TypeScript checks, and import-boundary checks passed. A fixture with a forbidden cross-module import was rejected. The web build reported two non-blocking warnings from Zod's Rollup annotations.
+- All nine fast tests passed, with five API tests and four UI tests.
+- Both Compose services reported healthy. The Nginx origin returned `200` and `{"status":"ok"}` for `/api/health`. The Playwright smoke test passed, and the app displayed **API is ready** in Chrome.
+- The native API and Vite scripts passed the same Playwright smoke test through `http://localhost:5173`. Chrome displayed **API is ready**. Another process occupied port `3000`, so both native processes ran with `API_PORT=3001`. The default port collision produced a structured `EADDRINUSE` log.
+- After the setup review changes, all ten fast tests passed, including registered and unmapped business errors and the relocated UI suites. Type checks, import checks, both builds, and the Compose Playwright smoke test passed. The proxied `404` returned the same request ID in its JSON body and response header.
