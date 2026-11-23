@@ -2,7 +2,7 @@
 
 ## Model
 - **Model:** Sol 6.2
-- **Reasoning effort:** Medium
+- **Reasoning effort:** Medium / High
 - **Tool:** Codex
 
 ## Agent Instructions
@@ -14,3 +14,4 @@
 - `domain-modeling`
 - `commit-message`
 - `pr-description`
+
