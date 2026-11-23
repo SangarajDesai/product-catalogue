@@ -1,0 +1,23 @@
+{
+  "name": "product-catalogue",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["apps/api", "apps/web"],
+  "engines": { "node": ">=22.12.0 <23" },
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "typecheck": "npm run typecheck --workspaces && tsc -p tests/e2e/tsconfig.json",
+    "check:boundaries": "depcruise --config .dependency-cruiser.cjs --output-type err apps/api/src apps/web/src",
+    "test:e2e": "playwright test"
+  },
+  "overrides": {
+    "vite": "^7.3.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^22.19.0",
+    "dependency-cruiser": "^17.3.0",
+    "typescript": "~5.9.3"
+  }
+}

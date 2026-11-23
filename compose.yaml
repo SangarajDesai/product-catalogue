@@ -1,0 +1,42 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: 3000
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      CATALOGUE_SOURCE: ${CATALOGUE_SOURCE:-live}
+      CATALOGUE_FEATURED_HOME: ${CATALOGUE_FEATURED_HOME:-}
+      CATALOGUE_FEATURED_CATEGORIES: ${CATALOGUE_FEATURED_CATEGORIES:-}
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_FROM: ${SMTP_FROM:-catalogue@example.test}
+      SMTP_TO: ${SMTP_TO:-sales@example.test}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1))"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/api/health"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+  mailpit:
+    image: axllent/mailpit:v1.34.0
+    environment:
+      MP_DISABLE_VERSION_CHECK: "true"
+    ports:
+      - "127.0.0.1:8025:8025"
