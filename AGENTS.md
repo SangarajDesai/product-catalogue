@@ -61,6 +61,7 @@
 - `grilling` + `domain-modeling` — Supporting skills.
 - `commit-message` — Commit message generation.
 - `pr-description` — Pull request descriptions.
+- `product-catalogue-qa` — Verify shopper-facing functionality against the challenge PDF and agreed behavior.
 
 ## Completion
 

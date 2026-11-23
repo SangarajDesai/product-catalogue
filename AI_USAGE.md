@@ -14,9 +14,20 @@
 - `commit-message`
 - `pr-description`
 
-## Architecture plan
+## Planning and implementation
 
-I used `grill-with-docs` in Plan Mode to challenge the proposed architecture and agree on the module boundaries, provider interfaces, and testing strategy before implementation. We turned the plan into a project setup spec and three vertical slice specs, each with run commands and acceptance checks. [Decision record](decisions.md) · [Project setup spec](docs/specs/00-project-setup.md)
+**Plan Mode.** I used `grill-with-docs` to challenge the proposed architecture and agree on the module boundaries, provider interfaces, and testing strategy before implementation. We turned the plan into a project setup spec and three vertical slice specs, each with run commands and acceptance checks. [Decision record](decisions.md) · [Project setup spec](docs/specs/00-project-setup.md)
+
+**Agent Mode.** I asked Codex to implement one approved slice at a time using `AGENTS.md` and the backend and frontend standards. Codex ran the relevant automated checks and browser tests and reported the results for review. I used my code review feedback to direct the corrections described below. [Backend standards](docs/standards/backend.md) · [Frontend standards](docs/standards/frontend.md)
+
+## Time spent
+
+| Activity | Time |
+| --- | --- |
+| Planning | 1 hour |
+| Implementation | 1 hour 30 minutes |
+| Testing | 30 minutes |
+| **Total** | **3 hours** |
 
 ## Prompts and code review
 

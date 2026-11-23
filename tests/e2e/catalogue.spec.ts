@@ -32,12 +32,18 @@ test("browses the catalogue, searches for a product, and sends an enquiry", asyn
   await page.getByRole("link", { name: "Return to the catalogue" }).click();
   await expect(featured.getByRole("listitem")).toHaveCount(5);
 
-  await page.getByRole("navigation", { name: "Categories" }).getByRole("link", { name: "Men's clothing", exact: true }).click();
+  const categoryLink = page.getByRole("navigation", { name: "Categories" }).getByRole("link", { name: "Men's clothing", exact: true });
+  await categoryLink.click();
   const category = page.getByRole("region", { name: "Men's clothing", exact: true });
   const categoryFeatured = category.getByRole("region", { name: "Featured in this category" });
   await expect(categoryFeatured.getByRole("heading", { name: backpack })).toBeVisible();
   await expect(category.getByRole("heading", { name: backpack })).toHaveCount(1);
   await expect(category.getByRole("region", { name: "More in this category" }).getByRole("listitem")).toHaveCount(3);
+
+  await category.getByRole("link", { name: "Close category and return to catalogue" }).click();
+  await expect(page).toHaveURL("/");
+  await expect(featured.getByRole("listitem")).toHaveCount(5);
+  await expect(categoryLink).not.toHaveAttribute("aria-current", "page");
 
   const searchBox = page.getByRole("searchbox", { name: "Search products" });
   await expect(page.getByRole("button", { name: "Search" })).toBeDisabled();

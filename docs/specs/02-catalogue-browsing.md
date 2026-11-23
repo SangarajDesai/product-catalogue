@@ -14,6 +14,7 @@ Let shoppers navigate categories, submit a search, and open a product details pa
 | `GET /api/products/:id` | Returns a product summary with its full `description`. An unknown product returns `404`. |
 
 - A category link opens `/categories/:slug`. Render one featured product first, then the remaining category products. Render each product once.
+- Show a close link beside the category heading that returns shoppers to the catalogue home and clears the active category.
 - Keep additional category products and search results in the selected catalogue's order.
 - The search form accepts clicks or Enter on a nonblank term. On submit, navigate to `/search?q=…` with the trimmed term. Use that term to drive the TanStack Query request. Show a clear no-results message and distinguish it from a request failure.
 - A tile from home, a category, or search opens `/products/:id`. Show the title, image, category, full description, and an INR price. Use the amount as supplied by Fake Store and use the currency from the API for formatting.

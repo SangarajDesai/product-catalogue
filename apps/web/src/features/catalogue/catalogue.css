@@ -77,6 +77,37 @@
   font-weight: 650;
 }
 
+.category-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+}
+
+.category-heading h2 {
+  margin: 0;
+}
+
+.category-close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  box-sizing: border-box;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid #d8ddd3;
+  border-radius: 0.45rem;
+  color: #224c37;
+  font-size: 1.35rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.category-close:hover {
+  border-color: #8fa996;
+  background: #e8eee6;
+}
+
 .category-products {
   margin-bottom: 1.5rem;
 }
@@ -123,6 +154,7 @@
 }
 
 .product-card-link:focus-visible,
+.category-close:focus-visible,
 .category-navigation a:focus-visible,
 .catalogue-search input:focus-visible,
 .catalogue-search button:focus-visible {
