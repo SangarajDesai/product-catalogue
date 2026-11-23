@@ -19,7 +19,7 @@ Put capability code under `apps/api/src/modules/<module>/`. Add the folders need
 
 ## HTTP, errors, and logs
 
-- Validate route parameters, query strings, and request bodies at the HTTP boundary. Call the relevant use case and map its result to the public response described in the slice spec.
+- Validate route parameters, query strings, and request bodies at the HTTP boundary. Call the relevant use case and map its result to the public response described in the slice spec. Define Zod schemas in dedicated `*.schema.ts` files alongside their owning boundary, such as provider and configuration schemas under `infrastructure/schemas/`.
 - Use Express 5 promise-returning handlers with the shared final error middleware. Catch an error locally when an adapter translates a provider failure or the application can recover.
 - Use `ApplicationError` for transport-independent failures and `HttpError` at the HTTP boundary. Give each module's business errors stable codes and register safe response mappings at startup. Keep translation in the HTTP error mapper and response serialization in middleware. Unmapped errors receive a generic `500`.
 - Preserve the JSON error contract `{ error: { code, message, requestId } }` and the `X-Request-Id` header. Log method, route template, status, duration, and request ID with Pino. Keep contact details, request bodies, credentials, and raw provider responses out of logs and public errors.

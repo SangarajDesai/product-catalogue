@@ -1,5 +1,5 @@
 import { Link, Route, Routes } from "react-router";
-import { ApiReadiness } from "./api-readiness";
+import { FeaturedHome } from "../features/catalogue/featured-home";
 
 export function App() {
   return (
@@ -8,7 +8,7 @@ export function App() {
         <Route path="/" element={
           <>
             <h1>Product catalogue</h1>
-            <ApiReadiness />
+            <FeaturedHome />
           </>
         } />
         <Route path="*" element={

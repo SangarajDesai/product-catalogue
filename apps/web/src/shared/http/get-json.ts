@@ -1,8 +1,5 @@
-import { z } from "zod";
-
-const errorResponse = z.object({
-  error: z.object({ code: z.string(), message: z.string(), requestId: z.string() }),
-});
+import type { ZodType } from "zod";
+import { errorResponseSchema } from "./schemas/error-response.schema";
 
 export class ApiError extends Error {
   constructor(message: string, readonly code: string, readonly requestId?: string) {
@@ -18,7 +15,7 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-export async function getJson<T>(path: string, schema: z.ZodType<T>, signal?: AbortSignal) {
+export async function getJson<T>(path: string, schema: ZodType<T>, signal?: AbortSignal) {
   const response = await fetch(path, { headers: { Accept: "application/json" }, signal }).catch((error: unknown) => {
     if (signal?.aborted) throw error;
     throw new ApiError("Could not reach the API.", "NETWORK_ERROR");
@@ -27,7 +24,7 @@ export async function getJson<T>(path: string, schema: z.ZodType<T>, signal?: Ab
   const body = await readJson(response);
 
   if (!response.ok) {
-    const result = errorResponse.safeParse(body);
+    const result = errorResponseSchema.safeParse(body);
     if (result.success) {
       const { message, code, requestId: errorId } = result.data.error;
       throw new ApiError(message, code, requestId ?? errorId);

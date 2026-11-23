@@ -16,5 +16,6 @@ COPY --from=build /app/apps/api/package.json apps/api/
 COPY --from=build /app/apps/web/package.json apps/web/
 RUN --mount=type=cache,target=/root/.npm npm ci --workspace @catalogue/api --omit=dev --no-audit --no-fund
 COPY --from=build /app/apps/api/dist apps/api/dist/
+COPY --from=build /app/apps/api/assets apps/api/assets/
 USER node
 CMD ["node", "--enable-source-maps", "apps/api/dist/server.js"]

@@ -12,7 +12,7 @@ The planned MVP covers all five acceptance criteria in the AI-Native Engineer ch
 | Product details and price | A product tile opens a page showing the title, image, category, description, price, and an **Enquire** button. Display prices in INR. Treat Fake Store's numeric values as INR amounts because the API supplies no currency code. For example, `109.95` displays as `₹109.95`. | Fake Store supplies the product fields needed for the page. INR is an explicit demo assumption, and future markets can show other currencies. |
 | Product enquiry | **Enquire** opens a form for the selected product. Name and email are required, and a message is optional. The sales inbox receives the product, contact details, and any message. Show **Thank you** after sending succeeds. If sending fails, show an error, keep the entered details, and let the shopper retry. | Sales has a reply address and product context, and shoppers get feedback that reflects the send outcome. |
 
-The specific home and category selections are still open. Use documented demo picks if the owner supplies no product IDs.
+Use the [documented demo picks](README.md#catalogue-and-featured-selections) until the owner supplies product IDs.
 
 ## Architecture, technologies, and tools
 

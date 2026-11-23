@@ -7,6 +7,9 @@ services:
       API_HOST: 0.0.0.0
       API_PORT: 3000
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      CATALOGUE_SOURCE: ${CATALOGUE_SOURCE:-live}
+      CATALOGUE_FEATURED_HOME: ${CATALOGUE_FEATURED_HOME:-}
+      CATALOGUE_FEATURED_CATEGORIES: ${CATALOGUE_FEATURED_CATEGORIES:-}
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1))"]
       interval: 2s

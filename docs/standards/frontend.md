@@ -12,7 +12,7 @@ The frontend is one React and TypeScript app. Use React Router for navigation an
 ## API and state
 
 - Use the same-origin `/api` endpoints for catalogue data and image URLs. The backend owns calls to Fake Store and SMTP.
-- Keep response schemas in the owning feature. Validate JSON with Zod before returning it from the API client to TanStack Query. Derive UI types from the schemas and keep them independent of the server's internal types.
+- Keep response schemas in dedicated `*.schema.ts` files under the owning feature's `api/schemas/` directory. Put shared HTTP response schemas in `shared/http/schemas/`. Validate JSON with Zod before returning it from the API client to TanStack Query. Derive UI types from the schemas and keep them independent of the server's internal types.
 - Use TanStack Query for API reads and mutations. Key reads by the inputs that determine the result. Keep form values local to the feature. Render the loading, empty, error, or success states relevant to the feature.
 - For an enquiry submission, disable automatic mutation retries and prevent repeated submits while pending. Preserve the entered values after a failed request and let the shopper retry manually.
 

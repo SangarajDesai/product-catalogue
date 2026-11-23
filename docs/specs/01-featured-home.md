@@ -37,3 +37,13 @@ npm run test:e2e
 - **Live-first smoke:** Run `docker compose down`, then `docker compose up --build --wait` with the default configuration. Check the backend startup log for the selected live or fallback source and confirm the home page still renders.
 
 Record the actual results and stop for engineer review before [catalogue browsing](02-catalogue-browsing.md).
+
+## Verification record
+
+Verified on 23 November 2026.
+
+- All 34 API and UI tests passed. The tests exercised ordered selections, provider normalization, fallback on outages or unusable data, invalid curation, and image replacement for failed or invalid upstream responses. The UI tests verified that malformed data stays out of the cache and that retry recovers.
+- TypeScript checks, import-boundary checks, and both production builds passed. The web build retained the two non-blocking Zod annotation warnings recorded in project setup.
+- Snapshot-mode Compose selected the bundled catalogue and passed the Playwright journey. In Chrome, all five cards appeared in the documented order with photos and INR prices.
+- A fresh default Compose run selected the live source. The featured endpoint returned IDs `1, 2, 5, 9, 15` and Chrome rendered the same five cards in order.
+- The built API exited with status `1` and logged `FEATURED_SELECTION_MISMATCH` when started in snapshot mode with an unavailable featured ID.
