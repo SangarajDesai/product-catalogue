@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "skills": {
+    "domain-modeling": {
+      "source": "schneidenbach/skills",
+      "commit": "c025c83cc8a0202aaab2774f4b3c2cc3f3b4b0ac",
+      "sourceType": "github",
+      "skillPath": "skills/domain-modeling/SKILL.md",
+      "computedHash": "b774575abca4507e581d59cdf06b37f5340744dcdef55dd76bda64c00b476a11"
+    },
+    "grill-with-docs": {
+      "source": "schneidenbach/skills",
+      "commit": "c025c83cc8a0202aaab2774f4b3c2cc3f3b4b0ac",
+      "sourceType": "github",
+      "skillPath": "skills/grill-with-docs/SKILL.md",
+      "computedHash": "02e258f41d210f9b2e7cce9faf62b3c59e8fcebe5d2736369c3cd07d471324f8"
+    },
+    "grilling": {
+      "source": "schneidenbach/skills",
+      "commit": "c025c83cc8a0202aaab2774f4b3c2cc3f3b4b0ac",
+      "sourceType": "github",
+      "skillPath": "skills/grilling/SKILL.md",
+      "computedHash": "34cea220383670130442576cca88646c9516e9c82082a543caf746b263928fc0"
+    }
+  }
+}
