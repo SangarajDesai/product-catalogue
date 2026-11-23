@@ -36,3 +36,11 @@ npm run test:e2e
 - **Reviewer startup:** Stop the test stack with `docker compose down`. Time the README instructions from a fresh checkout with Docker and Compose installed and note whether images were cached. Run `docker compose up --build` with the default configuration and verify the catalogue and inbox are usable within the ten-minute target. Stop Compose, then verify the native workflow by starting `mail`, `api`, and `web` in separate terminals and submitting an enquiry through `http://localhost:5173`.
 
 Record the measured setup time and actual test and browser results for engineer review.
+
+## Verification record
+
+- `npm test` passed with 47 API tests and 13 UI tests. Type checks, dependency boundary checks, and both production builds passed.
+- The Playwright journey passed against Compose and against the native services. It confirmed **Thank you** and matched exactly one Mailpit message by the shopper's unique reply-to address, then verified the sender, recipient, subject, and body.
+- In Chrome on Compose, a test enquiry arrived with the expected product and contact details. With Mailpit stopped, the form preserved the inputs and showed a request ID that matched a `503 MAIL_UNAVAILABLE` log entry. The API log contained no test contact details or message. After Mailpit restarted, **Try again** produced one matching email and showed **Thank you**.
+- Default Compose startup reached a usable catalogue and inbox in 8.21 seconds with cached Docker images and build layers. The run used a fresh source copy of the uncommitted slice without local configuration or dependencies. The API loaded the live catalogue.
+- Native verification ran `mail`, `api`, and `web` separately and submitted through port `5173`. The API and Vite proxy used `API_PORT=3001` because port `3000` was already occupied.

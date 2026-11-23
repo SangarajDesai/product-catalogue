@@ -8,6 +8,10 @@ import { catalogueErrorResponses, createCatalogueRoutes } from "./modules/catalo
 import { readCatalogueConfig } from "./modules/catalogue/infrastructure/catalogue-config.js";
 import { createProductImageProvider } from "./modules/catalogue/infrastructure/product-images.js";
 import { createFakeStoreRepository, createSnapshotRepository } from "./modules/catalogue/infrastructure/product-sources.js";
+import { createSubmitEnquiry } from "./modules/enquiry/application/submit-enquiry.js";
+import { createEnquiryRoutes, enquiryErrorResponses } from "./modules/enquiry/http/enquiry-routes.js";
+import { readSmtpConfig } from "./modules/enquiry/infrastructure/smtp-config.js";
+import { createSmtpEmailSender } from "./modules/enquiry/infrastructure/smtp-email-sender.js";
 import { createLogger } from "./shared/logging/logger.js";
 
 const envFile = fileURLToPath(new URL("../../../.env", import.meta.url));
@@ -36,13 +40,20 @@ async function initializeCatalogue() {
   } else {
     logger.info({ source: result.source }, "Catalogue loaded");
   }
-  return createCatalogueRoutes(catalogue);
+  return catalogue;
 }
 
 async function startServer() {
-  let catalogueRoutes: Awaited<ReturnType<typeof initializeCatalogue>>;
+  const smtpConfig = readSmtpConfig(process.env);
+  if (!smtpConfig.success) {
+    logger.error({ code: "INVALID_SMTP_CONFIG" }, "Check the SMTP host, port, sender, and sales recipient.");
+    process.exitCode = 1;
+    return;
+  }
+
+  let catalogue: Awaited<ReturnType<typeof initializeCatalogue>>;
   try {
-    catalogueRoutes = await initializeCatalogue();
+    catalogue = await initializeCatalogue();
   } catch (error) {
     const reason = error instanceof CatalogueLoadError ? error.reason : "CATALOGUE_ASSETS_UNAVAILABLE";
     logger.error({ code: "CATALOGUE_STARTUP_FAILED", reason }, "Could not initialize catalogue. Check featured selections and bundled assets.");
@@ -50,7 +61,15 @@ async function startServer() {
     return;
   }
 
-  const app = createApp({ logger, routes: [catalogueRoutes], businessErrorResponses: catalogueErrorResponses });
+  const submitEnquiry = createSubmitEnquiry({
+    findProduct: catalogue.findProductReference,
+    emailSender: createSmtpEmailSender(smtpConfig.data),
+  });
+  const app = createApp({
+    logger,
+    routes: [createCatalogueRoutes(catalogue), createEnquiryRoutes(submitEnquiry)],
+    businessErrorResponses: new Map([...catalogueErrorResponses, ...enquiryErrorResponses]),
+  });
   const server = app.listen(port, host, (error) => {
     if (error) {
       const systemCode = (error as NodeJS.ErrnoException).code;

@@ -4,6 +4,7 @@ import { CategoryPage } from "../features/catalogue/category-page";
 import { FeaturedHome } from "../features/catalogue/featured-home";
 import { ProductPage } from "../features/catalogue/product-page";
 import { SearchPage } from "../features/catalogue/search-page";
+import { ProductEnquiry } from "../features/enquiry/product-enquiry";
 
 export function App() {
   return (
@@ -13,7 +14,9 @@ export function App() {
           <Route path="/" element={<FeaturedHome />} />
           <Route path="/categories/:slug" element={<CategoryPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/products/:id" element={<ProductPage />} />
+          <Route path="/products/:id" element={
+            <ProductPage renderEnquiry={(productId) => <ProductEnquiry key={productId} productId={productId} />} />
+          } />
         </Route>
         <Route path="*" element={
           <>

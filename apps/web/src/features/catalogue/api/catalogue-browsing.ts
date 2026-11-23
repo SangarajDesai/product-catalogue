@@ -1,4 +1,4 @@
-import { getJson } from "../../../shared/http/get-json";
+import { getJson } from "../../../shared/http/api-client";
 import { categoryProductsSchema } from "./schemas/category-products.schema";
 import { categoriesSchema } from "./schemas/category.schema";
 import { productDetailSchema } from "./schemas/product-detail.schema";

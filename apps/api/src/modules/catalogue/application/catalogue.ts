@@ -6,7 +6,11 @@ import type { ProductImageProvider } from "./product-image-provider.js";
 import type { ProductRepository } from "./product-repository.js";
 
 function findProduct(products: readonly Product[], id: number) {
-  const product = products.find((candidate) => candidate.id === id);
+  return products.find((candidate) => candidate.id === id);
+}
+
+function requireProduct(products: readonly Product[], id: number) {
+  const product = findProduct(products, id);
   if (!product) throw new ProductNotFoundError();
   return product;
 }
@@ -16,12 +20,12 @@ export function createCatalogue(
   imageProvider: ProductImageProvider,
   featured: FeaturedSelections,
 ) {
-  const getProduct = async (id: number) => findProduct(await repository.list(), id);
+  const getProduct = async (id: number) => requireProduct(await repository.list(), id);
 
   return {
     async listFeatured() {
       const products = await repository.list();
-      return featured.home.map((id) => findProduct(products, id));
+      return featured.home.map((id) => requireProduct(products, id));
     },
     async listCategories() {
       const products = await repository.list();
@@ -33,7 +37,7 @@ export function createCatalogue(
       if (featuredId === undefined) throw new CategoryNotFoundError();
 
       const members = (await repository.list()).filter(({ category }) => category.slug === slug);
-      const featuredProduct = findProduct(members, featuredId);
+      const featuredProduct = requireProduct(members, featuredId);
       return {
         category: featuredProduct.category,
         featured: featuredProduct,
@@ -48,6 +52,10 @@ export function createCatalogue(
       );
     },
     getProduct,
+    async findProductReference(id: number) {
+      const product = findProduct(await repository.list(), id);
+      return product && { id: product.id, title: product.title };
+    },
     async getProductImage(id: number) {
       const product = await getProduct(id);
       return imageProvider.get(product.imageSource);

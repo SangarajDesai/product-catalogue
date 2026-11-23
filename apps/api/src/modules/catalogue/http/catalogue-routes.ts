@@ -5,7 +5,8 @@ import { ProductNotFoundError } from "../application/errors/product-not-found-er
 import type { Product } from "../domain/product.js";
 import { HttpError } from "../../../shared/http/errors/http-error.js";
 import type { BusinessErrorResponses } from "../../../shared/http/errors/to-http-error.js";
-import { categorySlugSchema, productIdSchema, searchTermSchema } from "./schemas/catalogue-request.schema.js";
+import { positiveIntegerParamSchema } from "../../../shared/http/schemas/positive-integer-param.schema.js";
+import { categorySlugSchema, searchTermSchema } from "./schemas/catalogue-request.schema.js";
 
 export const catalogueErrorResponses: BusinessErrorResponses = new Map([
   [ProductNotFoundError.code, { status: 404, message: "The product was not found." }],
@@ -17,7 +18,7 @@ function toProductSummary({ id, title, category, price }: Product) {
 }
 
 function parseProductId(value: string) {
-  const result = productIdSchema.safeParse(value);
+  const result = positiveIntegerParamSchema.safeParse(value);
   if (!result.success) throw new HttpError(400, "INVALID_INPUT", "The product ID must be a positive integer.");
   return result.data;
 }

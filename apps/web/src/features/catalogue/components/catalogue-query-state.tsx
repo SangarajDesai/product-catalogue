@@ -1,7 +1,7 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { Button } from "../../../shared/components/button";
-import { ApiError } from "../../../shared/http/get-json";
+import { ApiError } from "../../../shared/http/api-client";
 
 type Props<Data> = {
   query: UseQueryResult<Data>;

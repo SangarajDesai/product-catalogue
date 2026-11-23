@@ -1,0 +1,73 @@
+.product-enquiry {
+  margin-top: 1.4rem;
+  max-width: 29rem;
+}
+
+.enquiry-button {
+  border: 1px solid #224c37;
+  border-radius: 0.45rem;
+  background: #224c37;
+  color: #fff;
+}
+
+.enquiry-button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.enquiry-form fieldset {
+  display: grid;
+  gap: 0.8rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.85rem 1rem 1rem;
+  border: 1px solid #d8ddd3;
+  border-radius: 0.6rem;
+  background: #fff;
+}
+
+.enquiry-form legend {
+  padding: 0 0.35rem;
+  font-weight: 650;
+}
+
+.enquiry-field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.enquiry-field input,
+.enquiry-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid #8a978d;
+  border-radius: 0.4rem;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+.enquiry-field textarea {
+  resize: vertical;
+}
+
+.enquiry-field [aria-invalid="true"] {
+  border-color: #a83225;
+}
+
+.enquiry-field p,
+.enquiry-request-error p {
+  margin: 0;
+  color: #922c21;
+}
+
+.enquiry-form .enquiry-button {
+  justify-self: start;
+}
+
+.enquiry-confirmation {
+  margin: 0;
+  color: #224c37;
+  font-weight: 650;
+}

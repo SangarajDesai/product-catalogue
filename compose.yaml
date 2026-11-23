@@ -10,6 +10,10 @@ services:
       CATALOGUE_SOURCE: ${CATALOGUE_SOURCE:-live}
       CATALOGUE_FEATURED_HOME: ${CATALOGUE_FEATURED_HOME:-}
       CATALOGUE_FEATURED_CATEGORIES: ${CATALOGUE_FEATURED_CATEGORIES:-}
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_FROM: ${SMTP_FROM:-catalogue@example.test}
+      SMTP_TO: ${SMTP_TO:-sales@example.test}
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1))"]
       interval: 2s
@@ -30,3 +34,9 @@ services:
       interval: 2s
       timeout: 2s
       retries: 15
+  mailpit:
+    image: axllent/mailpit:v1.34.0
+    environment:
+      MP_DISABLE_VERSION_CHECK: "true"
+    ports:
+      - "127.0.0.1:8025:8025"
