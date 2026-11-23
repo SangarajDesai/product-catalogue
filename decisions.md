@@ -43,6 +43,7 @@ Each spec describes a runnable state of the repo, with automated checks, browser
 - Use title and description substring matching for search. Fuzzy matching can be evaluated when choosing a longer-term product data store.
 - Use INR for the demo and email for enquiries. Geography-based currency selection and other contact channels are future enhancements.
 - Keep the product source and mail provider behind replaceable interfaces. Shared UI primitives let the app adopt the eventual visual design as it becomes available.
+- React’s default JSX escaping helps prevent XSS when rendering search terms and catalogue API text. Further security hardening is deferred for the MVP.
 
 ## With another day
 
